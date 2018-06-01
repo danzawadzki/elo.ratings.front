@@ -23,13 +23,61 @@ class App extends Component {
     }
 
     fetchMatchesList = async () => {
-        const list = await fetch('http://176.119.51.91:5000/').then(res => res.json()).then(res => this.setState({
-            matches: {
-                status: "loaded",
-                list: res.data.matches
-            }
-        }));
+        const list = await fetch('http://176.119.51.91:5000/').then(res => res.json()).then(res => {
+            this.setState({
+                matches: {
+                    status: "loaded",
+                    list: res.data.matches
+                }
+            });
+
+            res.data.matches.map(match => {
+                const player1 = Number(this.state.playersList[match.home.playerId].value);
+                const player2 = Number(this.state.playersList[match.away.playerId].value);
+
+                const player1ovr = Number(match.home.teamAttack) + Number(match.home.teamMidfield) + Number(match.home.teamDefense);
+                const player2ovr = Number(match.away.teamAttack) + Number(match.away.teamMidfield) + Number(match.away.teamDefense);
+
+                const gm = this.getGoalMultiplier(match.home.goals, match.away.goals);
+                const e1 = 1 / (1 + Math.pow(10, ((player2 - player1) / 400 + (player2ovr - player1ovr) / 48)));
+                const s = this.getResult(match.home.goals, match.away.goals);
+
+                const ratingDelta = 24 * gm * (s - e1);
+
+                const {playersList} = this.state;
+                playersList[match.home.playerId].value += ratingDelta;
+                playersList[match.away.playerId].value -= ratingDelta;
+
+                this.setState({
+                    playersList
+                })
+            });
+
+        });
+
     };
+
+    getGoalMultiplier = (homeGoals, awayGoals) => {
+        const diff = Math.abs(homeGoals - awayGoals);
+
+        if (diff < 2) {
+            return 1;
+        } else if (diff === 2) {
+            return 3 / 2;
+        } else {
+            return (11 + diff) / 8;
+        }
+    };
+
+    getResult = (homeGoals, awayGoals) => {
+        if (homeGoals > awayGoals) {
+            return 1;
+        } else if (homeGoals === awayGoals) {
+            return .5;
+        } else {
+            return 0
+        }
+    }
 
     componentWillMount() {
         this.fetchMatchesList();

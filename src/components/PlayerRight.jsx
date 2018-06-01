@@ -17,7 +17,7 @@ const PlayerRight = ({playersList, teams, handleChange}) => (
                     <option selected>Choose...</option>
                     {Object.keys(playersList).map(player =>
                         <option
-                            value={player}>{player} - {playersList[player].name}</option>)}
+                            value={player}>{playersList[player].name}</option>)}
                 </select>
             </div>
         </div>
@@ -28,7 +28,7 @@ const PlayerRight = ({playersList, teams, handleChange}) => (
                     <option selected>Choose...</option>
                     {Object.keys(teams).map(team =>
                         <option
-                            value={team}>{team} - {teams[team].name}</option>)}
+                            value={team}>{teams[team].name}</option>)}
                 </select>
             </div>
             <div className="col-2 p-1">

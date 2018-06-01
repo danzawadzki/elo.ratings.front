@@ -2,10 +2,11 @@ import {Component} from "react";
 import * as React from 'react';
 import PlayerLeft from "./PlayerLeft";
 import PlayerRight from "./PlayerRight";
+import "whatwg-fetch";
 
 class FormMatch extends Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.submitMatch = this.submitMatch.bind(this);
     };
@@ -13,7 +14,7 @@ class FormMatch extends Component {
     submitMatch(e) {
         e.preventDefault();
         try {
-            const {homeTeamId, homePlayerId, homeGoals, homeTeamAttack, homeTeamDefense, homeTeamMidfield, awayTeamId, awayPlayerId = 0, awayGoals = 0, awayTeamAttack, awayTeamDefense, awayTeamMidfield} = this.state;
+            const {homeTeamId, homePlayerId, homeGoals = 0, homeTeamAttack, homeTeamDefense, homeTeamMidfield, awayTeamId, awayPlayerId, awayGoals = 0, awayTeamAttack, awayTeamDefense, awayTeamMidfield} = this.state;
 
             const today = new Date().toISOString().slice(0, 10);
             const data = {
@@ -39,22 +40,32 @@ class FormMatch extends Component {
             if (homeTeamId === awayTeamId) {
                 return alert("Choose different teams.");
             }
-            else if (homePlayerId === awayTeamId) {
+            else if (homePlayerId === awayPlayerId) {
                 return alert("Choose different players.");
             } else if (homeGoals < 0 || awayGoals < 0) {
                 return alert("Type correct result");
-            } else if (100 < homeTeamAttack || homeTeamAttack < 50 || 100 < homeTeamMidfield || homeTeamMidfield < 50 || 100 < homeTeamDefense || homeTeamDefense < 50 || 100 < awayTeamAttack || awayTeamAttack < 50 || 100 < awayTeamMidfield || awayTeamMidfield < 50 || 100 < awayTeamDefense || awayTeamDefense < 50) {
+            } else if ((100 < homeTeamAttack || homeTeamAttack < 50 || !homeTeamAttack) ||
+                (100 < homeTeamMidfield || homeTeamMidfield < 50 || !homeTeamMidfield) ||
+                (100 < homeTeamDefense || homeTeamDefense < 50 || !homeTeamDefense) ||
+                (100 < awayTeamAttack || awayTeamAttack < 50 || !awayTeamAttack) ||
+                (100 < awayTeamMidfield || awayTeamMidfield < 50 || !awayTeamMidfield) ||
+                (100 < awayTeamDefense || awayTeamDefense < 50 || !awayTeamDefense)) {
                 return alert("Type team stats in the range of 50-100.")
-            }
+            } else {
 
-            fetch('http://176.119.51.91:5000/', {
-                body: JSON.stringify(data),
-                method: "POST",
-                headers: {
-                    'content-type': 'application/json'
-                }
-            }).then(res => res.json());
-            window.location.reload();
+                fetch('http://176.119.51.91:5000/', {
+                    body: JSON.stringify(data),
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    mode: 'cors'
+                }).then(res => {
+                    res.json();
+                    window.location.reload();
+                });
+
+            }
         } catch (e) {
             alert("Fill all the fields.")
         }
