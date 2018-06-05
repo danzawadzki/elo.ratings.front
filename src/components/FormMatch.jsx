@@ -1,10 +1,14 @@
+import * as React from "react";
 import {Component} from "react";
-import * as React from 'react';
 import PlayerLeft from "./PlayerLeft";
 import PlayerRight from "./PlayerRight";
 import "whatwg-fetch";
 
 class FormMatch extends Component {
+    handleChange = event => {
+        this.setState({[event.target.id]: event.target.value})
+    };
+
     constructor(props) {
         super(props);
 
@@ -69,10 +73,6 @@ class FormMatch extends Component {
         } catch (e) {
             alert("Fill all the fields.")
         }
-    };
-
-    handleChange = event => {
-        this.setState({[event.target.id]: event.target.value})
     };
 
     render() {

@@ -33,15 +33,18 @@ const PlayerRight = ({playersList, teams, handleChange}) => (
             </div>
             <div className="col-2 p-1">
                 <small id="emailHelp" className="form-text text-muted">Attack</small>
-                <input type="number" className="form-control" id="awayTeamAttack" onChange={handleChange} placeholder="0"/>
+                <input type="number" className="form-control" id="awayTeamAttack" onChange={handleChange}
+                       placeholder="0"/>
             </div>
             <div className="col-2 p-1">
                 <small id="emailHelp" className="form-text text-muted">Midfield</small>
-                <input type="number" className="form-control" id="awayTeamMidfield" onChange={handleChange} placeholder="0"/>
+                <input type="number" className="form-control" id="awayTeamMidfield" onChange={handleChange}
+                       placeholder="0"/>
             </div>
             <div className="col-2 p-1">
                 <small id="emailHelp" className="form-text text-muted">Defense</small>
-                <input type="number" className="form-control" id="awayTeamDefense" onChange={handleChange} placeholder="0"/>
+                <input type="number" className="form-control" id="awayTeamDefense" onChange={handleChange}
+                       placeholder="0"/>
             </div>
         </div>
     </div>

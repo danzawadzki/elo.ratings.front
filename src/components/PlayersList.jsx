@@ -8,7 +8,11 @@ const PlayersList = ({playersList}) => {
             id: player,
             name: playersList[player].name,
             value: playersList[player].value,
+            form: playersList[player].form,
             games: playersList[player].games,
+            won: playersList[player].won,
+            draw: playersList[player].draw,
+            lost: playersList[player].lost,
             goalsScored: playersList[player].goalsScored,
             goalsConceded: playersList[player].goalsConceded,
 
@@ -33,9 +37,13 @@ const PlayersList = ({playersList}) => {
                         <th scope="col">#</th>
                         <th scope="col">name</th>
                         <th scope="col">games</th>
-                        <th scope="col">goals scored</th>
-                        <th scope="col">goals conceded</th>
-                        <th scope="col">goals ratio</th>
+                        <th scope="col">won</th>
+                        <th scope="col">draw</th>
+                        <th scope="col">lost</th>
+                        <th scope="col">scored</th>
+                        <th scope="col">conceded</th>
+                        <th scope="col">ratio</th>
+                        <th scope="col">form</th>
                         <th scope="col">rating</th>
                     </tr>
                     </thead>
@@ -44,9 +52,13 @@ const PlayersList = ({playersList}) => {
                         <th scope="row">{i + 1}</th>
                         <td>{player.name}</td>
                         <td>{player.games}</td>
+                        <td>{player.won}</td>
+                        <td>{player.draw}</td>
+                        <td>{player.lost}</td>
                         <td>{player.goalsScored}</td>
                         <td>{player.goalsConceded}</td>
                         <td>{player.goalsScored - player.goalsConceded}</td>
+                        <td>{player.form.slice(-5).reverse().join(", ")}</td>
                         <td>{player.value}</td>
                     </tr>)}
                     </tbody>

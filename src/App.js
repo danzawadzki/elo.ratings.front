@@ -8,20 +8,6 @@ import {teams} from "./constants/teams";
 
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-
-        //Players list
-        this.state = {
-            playersList: players,
-            teams,
-            matches: {
-                status: "pending",
-                list: []
-            }
-        }
-    }
-
     fetchMatchesList = async () => {
         const list = await fetch('http://176.119.51.91:5000/').then(res => res.json()).then(res => {
 
@@ -51,6 +37,27 @@ class App extends Component {
                 playersList[match.home.playerId].games++;
                 playersList[match.away.playerId].games++;
 
+                switch (s) {
+                    case 1:
+                        playersList[match.home.playerId].won++;
+                        playersList[match.home.playerId].form.push("W");
+                        playersList[match.away.playerId].lost++;
+                        playersList[match.away.playerId].form.push("L");
+                        break;
+                    case .5:
+                        playersList[match.home.playerId].draw++;
+                        playersList[match.home.playerId].form.push("D");
+                        playersList[match.away.playerId].draw++;
+                        playersList[match.away.playerId].form.push("D");
+                        break;
+                    case 0:
+                        playersList[match.home.playerId].lost++;
+                        playersList[match.home.playerId].form.push("L");
+                        playersList[match.away.playerId].won++;
+                        playersList[match.away.playerId].form.push("W");
+                        break;
+                }
+
 
                 this.setState({
                     playersList
@@ -72,7 +79,6 @@ class App extends Component {
         });
 
     };
-
     getGoalMultiplier = (homeGoals, awayGoals) => {
         const diff = Math.abs(homeGoals - awayGoals);
 
@@ -84,7 +90,6 @@ class App extends Component {
             return (11 + diff) / 8;
         }
     };
-
     getResult = (homeGoals, awayGoals) => {
         if (homeGoals > awayGoals) {
             return 1;
@@ -92,6 +97,20 @@ class App extends Component {
             return .5;
         } else {
             return 0
+        }
+    }
+
+    constructor(props) {
+        super(props);
+
+        //Players list
+        this.state = {
+            playersList: players,
+            teams,
+            matches: {
+                status: "pending",
+                list: []
+            }
         }
     }
 
