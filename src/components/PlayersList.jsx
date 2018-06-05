@@ -7,7 +7,11 @@ const PlayersList = ({playersList}) => {
         playersArray = [...playersArray, {
             id: player,
             name: playersList[player].name,
-            value: playersList[player].value
+            value: playersList[player].value,
+            games: playersList[player].games,
+            goalsScored: playersList[player].goalsScored,
+            goalsConceded: playersList[player].goalsConceded,
+
         }]
     });
 
@@ -28,6 +32,10 @@ const PlayersList = ({playersList}) => {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">name</th>
+                        <th scope="col">games</th>
+                        <th scope="col">goals scored</th>
+                        <th scope="col">goals conceded</th>
+                        <th scope="col">goals ratio</th>
                         <th scope="col">rating</th>
                     </tr>
                     </thead>
@@ -35,6 +43,10 @@ const PlayersList = ({playersList}) => {
                     {playersArray.map((player, i) => <tr key={player.id}>
                         <th scope="row">{i + 1}</th>
                         <td>{player.name}</td>
+                        <td>{player.games}</td>
+                        <td>{player.goalsScored}</td>
+                        <td>{player.goalsConceded}</td>
+                        <td>{player.goalsScored - player.goalsConceded}</td>
                         <td>{player.value}</td>
                     </tr>)}
                     </tbody>

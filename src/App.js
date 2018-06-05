@@ -42,6 +42,16 @@ class App extends Component {
                 playersList[match.home.playerId].value += ratingDelta;
                 playersList[match.away.playerId].value -= ratingDelta;
 
+                playersList[match.home.playerId].goalsScored += parseInt(match.home.goals);
+                playersList[match.home.playerId].goalsConceded += parseInt(match.away.goals);
+
+                playersList[match.away.playerId].goalsScored += parseInt(match.away.goals);
+                playersList[match.away.playerId].goalsConceded += parseInt(match.home.goals);
+
+                playersList[match.home.playerId].games++;
+                playersList[match.away.playerId].games++;
+
+
                 this.setState({
                     playersList
                 });
