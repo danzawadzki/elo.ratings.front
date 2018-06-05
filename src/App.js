@@ -123,9 +123,9 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="container">
-                    {/*<img src='http://www.cloudtechnologies.pl/img/cloudtechnologies.png' alt="logo" />*/}
-                    <div className="row text-center">
-                        <h1 className="display-4 m-5">Office Elo Soccer Rating</h1>
+                    <div className="row d-flex flex-column justify-content-center align-items-center">
+                        <img src="http://www.fifplay.com/img/public/fifa-18-logo-black.png" alt="" className="logo mt-3"/>
+                        <h1 className="display-4 mt-2 mb-5">Office Elo Soccer Rating</h1>
                     </div>
                     <FormMatch playersList={this.state.playersList} teams={this.state.teams}/>
 
