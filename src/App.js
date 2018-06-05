@@ -24,14 +24,8 @@ class App extends Component {
 
     fetchMatchesList = async () => {
         const list = await fetch('http://176.119.51.91:5000/').then(res => res.json()).then(res => {
-            this.setState({
-                matches: {
-                    status: "loaded",
-                    list: res.data.matches
-                }
-            });
 
-            res.data.matches.map(match => {
+            const matchesList = res.data.matches.map((match, i) => {
                 const player1 = Number(this.state.playersList[match.home.playerId].value);
                 const player2 = Number(this.state.playersList[match.away.playerId].value);
 
@@ -50,7 +44,19 @@ class App extends Component {
 
                 this.setState({
                     playersList
-                })
+                });
+
+                return {
+                    ...match,
+                    ratingDelta
+                };
+            });
+
+            this.setState({
+                matches: {
+                    status: "loaded",
+                    list: matchesList
+                }
             });
 
         });
