@@ -144,7 +144,6 @@ class App extends Component {
 
     componentWillMount() {
         this.fetchMatchesList();
-        //this.submitMatch();
     }
 
     render() {

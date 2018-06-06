@@ -9,8 +9,21 @@ class FormMatch extends Component {
         this.setState({ [event.target.id]: event.target.value });
     };
 
+    handleChangeDropdown = event => {
+        this.handleChange(event);
+
+        this.setState({
+            [event.target.id + "Stats"] : this.props.teams[event.target.value]
+        })
+    };
+
     constructor(props) {
         super(props);
+
+        this.state = {
+            homeTeamIdStats: {},
+            awayTeamIdStats: {}
+        }
 
         this.submitMatch = this.submitMatch.bind(this);
     }
@@ -22,15 +35,11 @@ class FormMatch extends Component {
                 homeTeamId,
                 homePlayerId,
                 homeGoals = 0,
-                homeTeamAttack,
-                homeTeamDefense,
-                homeTeamMidfield,
+                homeTeamIdStats,
                 awayTeamId,
                 awayPlayerId,
                 awayGoals = 0,
-                awayTeamAttack,
-                awayTeamDefense,
-                awayTeamMidfield
+                awayTeamIdStats
             } = this.state;
 
             const today = new Date().toISOString().slice(0, 10);
@@ -40,17 +49,17 @@ class FormMatch extends Component {
                     teamId: homeTeamId,
                     playerId: homePlayerId,
                     goals: homeGoals,
-                    teamAttack: homeTeamAttack,
-                    teamDefense: homeTeamDefense,
-                    teamMidfield: homeTeamMidfield
+                    teamAttack: homeTeamIdStats.attack_ovr,
+                    teamDefense: homeTeamIdStats.defense_ovr,
+                    teamMidfield: homeTeamIdStats.midfield_ovr
                 },
                 away: {
                     teamId: awayTeamId,
                     playerId: awayPlayerId,
                     goals: awayGoals,
-                    teamAttack: awayTeamAttack,
-                    teamDefense: awayTeamDefense,
-                    teamMidfield: awayTeamMidfield
+                    teamAttack: awayTeamIdStats.attack_ovr,
+                    teamDefense: awayTeamIdStats.defense_ovr,
+                    teamMidfield: awayTeamIdStats.midfield_ovr
                 }
             };
 
@@ -60,28 +69,30 @@ class FormMatch extends Component {
                 return alert("Choose different players.");
             } else if (homeGoals < 0 || awayGoals < 0) {
                 return alert("Type correct result");
-            } else if (
-                100 < homeTeamAttack ||
-                homeTeamAttack < 50 ||
-                !homeTeamAttack ||
-                (100 < homeTeamMidfield ||
-                    homeTeamMidfield < 50 ||
-                    !homeTeamMidfield) ||
-                (100 < homeTeamDefense ||
-                    homeTeamDefense < 50 ||
-                    !homeTeamDefense) ||
-                (100 < awayTeamAttack ||
-                    awayTeamAttack < 50 ||
-                    !awayTeamAttack) ||
-                (100 < awayTeamMidfield ||
-                    awayTeamMidfield < 50 ||
-                    !awayTeamMidfield) ||
-                (100 < awayTeamDefense ||
-                    awayTeamDefense < 50 ||
-                    !awayTeamDefense)
-            ) {
-                return alert("Type team stats in the range of 50-100.");
-            } else {
+            }
+            // else if (
+            //     100 < homeTeamAttack ||
+            //     homeTeamAttack < 50 ||
+            //     !homeTeamAttack ||
+            //     (100 < homeTeamMidfield ||
+            //         homeTeamMidfield < 50 ||
+            //         !homeTeamMidfield) ||
+            //     (100 < homeTeamDefense ||
+            //         homeTeamDefense < 50 ||
+            //         !homeTeamDefense) ||
+            //     (100 < awayTeamAttack ||
+            //         awayTeamAttack < 50 ||
+            //         !awayTeamAttack) ||
+            //     (100 < awayTeamMidfield ||
+            //         awayTeamMidfield < 50 ||
+            //         !awayTeamMidfield) ||
+            //     (100 < awayTeamDefense ||
+            //         awayTeamDefense < 50 ||
+            //         !awayTeamDefense)
+            // ) {
+            //     return alert("Type team stats in the range of 50-100.");
+            // }
+            else {
                 fetch("http://176.119.51.91:5000/", {
                     body: JSON.stringify(data),
                     method: "POST",
@@ -104,21 +115,26 @@ class FormMatch extends Component {
             <form onSubmit={this.submitMatch}>
                 <div className="form-row">
                     <PlayerLeft
+                        handleChangeDropdown={this.handleChangeDropdown}
                         handleChange={this.handleChange}
                         playersList={this.props.playersList}
                         teams={this.props.teams}
+                        teamStats={this.state.homeTeamIdStats}
                     />
                     <PlayerRight
+                        handleChangeDropdown={this.handleChangeDropdown}
                         handleChange={this.handleChange}
                         playersList={this.props.playersList}
                         teams={this.props.teams}
+                        teamStats={this.state.awayTeamIdStats}
                     />
                 </div>
 
                 <div className="d-flex justify-content-center">
                     <button
                         type="submit"
-                        className="btn btn-primary pr-4 pl-4 mt-3 mb-3">
+                        className="btn btn-primary pr-4 pl-4 mt-3 mb-3"
+                    >
                         Submit match
                     </button>
                 </div>

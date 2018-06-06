@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const PlayerRight = ({ playersList, teams, handleChange }) => (
+const PlayerRight = ({ playersList, teams, teamStats, handleChange, handleChangeDropdown }) => (
     <div className="col-6 matchForm__player">
         <div className="row">
             <h4 className="col-12 text-center">Player 2</h4>
@@ -43,7 +43,7 @@ const PlayerRight = ({ playersList, teams, handleChange }) => (
                 </small>
                 <select
                     id="awayTeamId"
-                    onChange={handleChange}
+                    onChange={handleChangeDropdown}
                     className="form-control">
                     <option selected>Choose...</option>
                     {Object.keys(teams).map(team => (
@@ -61,6 +61,7 @@ const PlayerRight = ({ playersList, teams, handleChange }) => (
                     id="awayTeamAttack"
                     onChange={handleChange}
                     placeholder="0"
+                    value={teamStats.attack_ovr || 0}
                 />
             </div>
             <div className="col-2 p-1">
@@ -73,6 +74,7 @@ const PlayerRight = ({ playersList, teams, handleChange }) => (
                     id="awayTeamMidfield"
                     onChange={handleChange}
                     placeholder="0"
+                    value={teamStats.midfield_ovr || 0}
                 />
             </div>
             <div className="col-2 p-1">
@@ -85,6 +87,7 @@ const PlayerRight = ({ playersList, teams, handleChange }) => (
                     id="awayTeamDefense"
                     onChange={handleChange}
                     placeholder="0"
+                    value={teamStats.defense_ovr || 0}
                 />
             </div>
         </div>
