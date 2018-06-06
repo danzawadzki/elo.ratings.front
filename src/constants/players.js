@@ -62,7 +62,8 @@ export const players = {
         games: 0,
         won: 0,
         draw: 0,
-        lost: 0, form: []
+        lost: 0,
+        form: []
     },
     7: {
         name: "Jakub Gajewski",
